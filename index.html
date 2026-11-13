@@ -1,18 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
   <title>Grok Desk</title>
   <style>
-    body { background:#000; color:#fff; font-family:-apple-system,sans-serif; text-align:center; padding-top:40vh; }
-    .balance { font-size:48px; }
-    .paper { background:#ff9f0a; color:#000; padding:6px 12px; border-radius:12px; display:inline-block; margin-top:12px; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+    .navbar { padding: 54px 16px 12px; font-size: 17px; font-weight: 600; }
+    .balance { font-size: 66px; font-weight: 600; padding: 0 16px; font-variant-numeric: tabular-nums; letter-spacing: -1px; }
+    .row { display: flex; align-items: center; gap: 8px; padding: 4px 16px; }
+    .paper { background: #ff9f0a; color: #000; padding: 4px 10px; border-radius: 12px; font-size: 13px; font-weight: 600; }
+    .mult { color: #00d35a; font-size: 15px; font-weight: 600; }
+    .status { padding: 12px 16px; color: rgba(235,235,245,0.6); font-size: 15px; }
+    .agents { padding: 8px 16px; color: rgba(235,235,245,0.6); }
+    .card { margin: 16px; background: #1c1c1e; border-radius: 16px; padding: 16px; }
   </style>
 </head>
 <body>
-  <div class="balance">$200.00</div>
-  <div class="paper">PAPER</div>
-  <p>Desk starting…</p>
+  <div class="navbar">Grok Bot ›</div>
+  <div class="balance" id="balance">$200.00</div>
+  <div class="row">
+    <span class="paper" id="mode">PAPER</span>
+    <span class="mult" id="mult">1.00×</span>
+  </div>
+  <div class="status" id="status">Waiting for the first trade</div>
+  <div class="agents">Agents · 5 running</div>
+  <div class="card">Scanner · Listening for graduations</div>
+  <script>
+    async function refresh() {
+      document.getElementById("status").textContent = "Last check " + new Date().toLocaleTimeString();
+    }
+    setInterval(refresh, 15000);
+  </script>
 </body>
 </html>
