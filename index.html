@@ -4,120 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Grok Desk</title>
   <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { margin: 0; background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; padding-bottom: 84px; }
-    .navbar { padding: 54px 16px 8px; font-size: 17px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-    .balance { font-size: 66px; font-weight: 600; padding: 0 16px; font-variant-numeric: tabular-nums; letter-spacing: -1.5px; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding-bottom: 84px; }
+    .navbar { padding: 54px 16px 8px; font-size: 17px; font-weight: 600; }
+    .balance { font-size: 66px; font-weight: 600; padding: 0 16px; font-variant-numeric: tabular-nums; }
     .row { display: flex; align-items: center; gap: 8px; padding: 2px 16px 8px; }
     .paper { background: #ff9f0a; color: #000; padding: 3px 9px; border-radius: 12px; font-size: 13px; font-weight: 600; }
     .mult { color: #00d35a; font-size: 15px; font-weight: 600; }
     .status { padding: 4px 16px 12px; color: rgba(235,235,245,0.6); font-size: 15px; }
-    .section-title { padding: 12px 16px 6px; font-size: 13px; color: rgba(235,235,245,0.6); }
-    .card { margin: 0 16px 12px; background: #1c1c1e; border-radius: 16px; padding: 14px 16px; }
-    .card-title { font-size: 17px; font-weight: 600; }
-    .card-sub { font-size: 13px; color: rgba(235,235,245,0.6); margin-top: 2px; }
-    .tabbar { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(28,28,30,0.92); backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; border-top: 0.5px solid rgba(84,84,88,0.55); z-index: 10; }
+    .tabbar { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(28,28,30,0.92); display: flex; justify-content: space-around; padding-top: 8px; border-top: 0.5px solid rgba(84,84,88,0.55); }
     .tab { flex: 1; text-align: center; font-size: 10px; color: rgba(235,235,245,0.6); }
     .tab.active { color: #0a84ff; }
-    .tab span { display: block; font-size: 22px; margin-bottom: 2px; }
-    .screen { display: none; }
-    .screen.active { display: block; }
-    .empty { text-align: center; padding: 80px 20px; color: rgba(235,235,245,0.6); }
-    .btn { display: block; margin: 16px; background: #0a84ff; color: #fff; text-align: center; padding: 14px; border-radius: 12px; font-weight: 600; text-decoration: none; }
-    .layer { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid rgba(84,84,88,0.4); }
-    .ok { color: #00d35a; }
-    .red { color: #ff453a; }
   </style>
 </head>
 <body>
-  <!-- HOME -->
-  <div id="home" class="screen active">
-    <div class="navbar">Grok Bot › <span>🔔</span></div>
-    <div class="balance">$200.00</div>
-    <div class="row"><span class="paper">PAPER</span><span class="mult">1.00×</span></div>
-    <div class="status" id="status">Waiting for the first trade</div>
-    <div class="section-title">Agents · 5 running</div>
-    <div class="card" onclick="show('auditor')"><div class="card-title">Scanner</div><div class="card-sub">Listening for graduations</div></div>
-    <div class="card" onclick="show('auditor')"><div class="card-title">Auditor</div><div class="card-sub">0 taken apart</div></div>
-    <div class="section-title">Activity · See all</div>
-    <div class="empty">Nothing yet tonight</div>
+  <div class="navbar">Grok Bot ›</div>
+  <div class="balance" id="balance">$200.00</div>
+  <div class="row">
+    <span class="paper" id="mode">PAPER</span>
+    <span class="mult" id="mult">1.00×</span>
   </div>
-
-  <!-- AGENTS -->
-  <div id="agents" class="screen">
-    <div class="navbar">Agents</div>
-    <div class="card"><div class="card-title">Scanner</div><div class="card-sub">running · 0 today</div></div>
-    <div class="card"><div class="card-title">Auditor</div><div class="card-sub">running · 0 today</div></div>
-    <div class="card"><div class="card-title">Analyst</div><div class="card-sub">running · 0 today</div></div>
-    <div class="card"><div class="card-title">Executor</div><div class="card-sub">running · 0 today</div></div>
-    <div class="card"><div class="card-title">Risk</div><div class="card-sub">running · 0 today</div></div>
-  </div>
-
-  <!-- ACTIVITY -->
-  <div id="activity" class="screen">
-    <div class="navbar">Activity</div>
-    <div class="empty">Nothing yet tonight</div>
-  </div>
-
-  <!-- ACCOUNT -->
-  <div id="account" class="screen">
-    <div class="navbar">Account</div>
-    <div class="card"><div class="card-title">Mode</div><div class="card-sub">PAPER</div></div>
-    <div class="card"><div class="card-title">Stack</div><div class="card-sub">$200</div></div>
-    <div class="card"><div class="card-title">Your FOMO profile</div><div class="card-sub">gorbindx</div></div>
-    <div class="card"><div class="card-title">Invite a friend</div><div class="card-sub">https://fomo.family/r/savipww</div></div>
-    <div class="card"><div class="card-title">Telegram</div><div class="card-sub">connected · @gorbobot</div></div>
-  </div>
-
-  <!-- AUDITOR (example) -->
-  <div id="auditor" class="screen">
-    <div class="navbar">Auditor</div>
-    <div class="card">
-      <div class="card-title">Example Coin</div>
-      <div class="card-sub">8/8 cleared</div>
-      <div class="layer"><span>1 Mint authority</span><span class="ok">Revoked</span></div>
-      <div class="layer"><span>2 Freeze authority</span><span class="ok">Revoked</span></div>
-      <div class="layer"><span>3 Dev wallet</span><span class="ok">0.9% · sold 0</span></div>
-      <div class="layer"><span>4 Top 10</span><span class="ok">16.8%</span></div>
-      <div class="layer"><span>5 Liquidity</span><span class="ok">100% burned</span></div>
-      <div class="layer"><span>6 Pool age</span><span class="ok">43m</span></div>
-      <div class="layer"><span>7 Bundled</span><span class="ok">None</span></div>
-      <div class="layer"><span>8 Delegations</span><span class="ok">None</span></div>
-    </div>
-    <a class="btn" href="https://fomo.family/r/savipww">Open on FOMO</a>
-  </div>
-
-  <!-- COIN (example) -->
-  <div id="coin" class="screen">
-    <div class="navbar">Coin</div>
-    <div class="balance" style="font-size:48px">$0.00123</div>
-    <div class="status">▲ 12% since entry</div>
-    <div class="card"><div class="card-title">Your position</div><div class="card-sub">$16 in · Executor</div></div>
-    <a class="btn" href="https://fomo.family/r/savipww">Buy on FOMO</a>
-  </div>
+  <div class="status" id="status">Loading…</div>
 
   <div class="tabbar">
-    <div class="tab active" onclick="show('home')"><span>⌂</span>Home</div>
-    <div class="tab" onclick="show('agents')"><span>◈</span>Agents</div>
-    <div class="tab" onclick="show('activity')"><span>≡</span>Activity</div>
-    <div class="tab" onclick="show('account')"><span>◉</span>Account</div>
+    <div class="tab active">Home</div>
+    <div class="tab">Agents</div>
+    <div class="tab">Activity</div>
+    <div class="tab">Account</div>
   </div>
 
   <script>
-    function show(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      const el = document.getElementById(id);
-      if (el) el.classList.add('active');
-      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    async function load() {
+      try {
+        const r = await fetch('state.json?' + Date.now());
+        const s = await r.json();
+        document.getElementById('balance').textContent = '$' + s.balance.toFixed(2);
+        document.getElementById('mode').textContent = s.mode;
+        document.getElementById('mult').textContent = s.multiplier.toFixed(2) + '×';
+        document.getElementById('status').textContent = 'Updated ' + new Date(s.ts * 1000).toLocaleTimeString();
+      } catch (e) {
+        document.getElementById('status').textContent = 'Offline · retrying';
+      }
     }
-    setInterval(() => {
-      const s = document.getElementById('status');
-      if (s) s.textContent = 'Last check ' + new Date().toLocaleTimeString();
-    }, 15000);
+    load();
+    setInterval(load, 15000);
   </script>
 </body>
 </html>
