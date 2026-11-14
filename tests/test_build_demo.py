@@ -21,6 +21,8 @@ def test_build_demo_is_public_read_only_paper(tmp_path):
     account = json.loads((data / "account.json").read_text())
     activity = json.loads((data / "activity.json").read_text())
     manifest = json.loads((site / "manifest.json").read_text())
+    page = (site / "index.html").read_text()
+    app = (site / "app.js").read_text()
 
     assert state["mode"] == "PAPER"
     assert state["balance"] == state["start_balance"] == 200
@@ -28,5 +30,8 @@ def test_build_demo_is_public_read_only_paper(tmp_path):
     assert account["plan"] == "B"
     assert account["telegram"] == "not connected"
     assert account["webpush"] is False
-    assert manifest["start_url"].endswith("#d=demo")
-    assert "PUBLIC DEMO | PAPER | SYNTHETIC DATA | READ-ONLY" in (site / "index.html").read_text()
+    assert manifest["start_url"] == "./index.html"
+    assert '<html lang="en" data-demo="true">' in page
+    assert "const DEMO = document.documentElement.dataset.demo === 'true';" in app
+    assert "const DP = DEMO ? 'demo' : localStorage.getItem('desk_d');" in app
+    assert "PUBLIC DEMO | PAPER | SYNTHETIC DATA | READ-ONLY" in page

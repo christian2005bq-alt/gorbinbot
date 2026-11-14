@@ -50,8 +50,9 @@ def build(output):
 
             index = output / "index.html"
             html = index.read_text()
-            if '<main id="view">' not in html or "</head>" not in html:
+            if '<html lang="en">' not in html or '<main id="view">' not in html or "</head>" not in html:
                 raise RuntimeError("Unexpected web/index.html structure")
+            html = html.replace('<html lang="en">', '<html lang="en" data-demo="true">', 1)
             html = html.replace(
                 "</head>",
                 '  <link rel="stylesheet" href="demo.css">\n</head>',
@@ -65,9 +66,23 @@ def build(output):
             )
             index.write_text(html)
 
+            app = output / "app.js"
+            script = app.read_text()
+            auth = "const TOKEN = localStorage.getItem('desk_t'), DP = localStorage.getItem('desk_d');"
+            if auth not in script:
+                raise RuntimeError("Unexpected web/app.js authentication structure")
+            script = script.replace(
+                auth,
+                "const DEMO = document.documentElement.dataset.demo === 'true';\n"
+                "  const TOKEN = DEMO ? null : localStorage.getItem('desk_t');\n"
+                "  const DP = DEMO ? 'demo' : localStorage.getItem('desk_d');",
+                1,
+            )
+            app.write_text(script)
+
             manifest = output / "manifest.json"
             manifest_data = json.loads(manifest.read_text())
-            manifest_data["start_url"] = "./index.html#d=demo"
+            manifest_data["start_url"] = "./index.html"
             manifest.write_text(json.dumps(manifest_data, indent=2) + "\n")
         finally:
             desk.db.conn.close()
