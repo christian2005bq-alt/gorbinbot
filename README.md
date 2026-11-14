@@ -3,7 +3,8 @@
 One always-on asyncio process (`main.py`): Scanner, Auditor, Analyst, Executor, Risk, the API/app on 127.0.0.1:8787,
 Telegram long polling (owner lock), plan B JSON writer (out/site/d/<DATA_PATH>/ every 15s), night rollover at report_time.
 
-- Public demo: https://christian2005bq-alt.github.io/gorbinbot/ . GitHub Pages builds a static, read-only PAPER demo
+- Public demo: https://christian2005bq-alt.github.io/gorbinbot/ . Set the Pages source to GitHub Actions; each push to
+  `main` builds and deploys a static, read-only PAPER demo
   from a fresh synthetic database. It contains no live account data or credentials and does not run the bot.
   The free static demo is not an always-on live service. Build it locally with `python tools/build_demo.py _site`.
 - Start / restart: `/workspace/desk/run.sh`  (kills the old pid from desk.pid, starts `setsid nohup`, logs to logs/process.log)
