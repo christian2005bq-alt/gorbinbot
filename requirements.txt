@@ -1,0 +1,10 @@
+websockets
+httpx
+fastapi
+uvicorn
+pydantic
+pywebpush
+playwright
+solders
+pytest
+pytest-asyncio

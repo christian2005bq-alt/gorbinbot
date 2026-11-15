@@ -1,0 +1,32 @@
+# secrets and private links: never committed
+.env
+*.env
+.env.*
+secrets/
+*secret*
+app_link*.txt
+public_app_link*.txt
+ngrok.yml
+*.pem
+*.key
+# runtime state
+desk.db*
+desk.pid
+chrome/
+logs/
+data/
+status/
+social/
+reports/
+proofs/
+out/
+tools/tunnel-node/
+# environments and builds
+.venv
+.venv/
+venv/
+node_modules/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pid
